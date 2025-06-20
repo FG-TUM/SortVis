@@ -1,0 +1,13 @@
+# Generated from CLion C/C++ Code Style settings
+Language: Cpp
+BasedOnStyle: Google
+IndentWidth: 2
+# we want more space per line
+ColumnLimit: 120
+# ensure consistent pointer alignment
+DerivePointerAlignment: false
+PointerAlignment: Right
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortBlocksOnASingleLine: Never
+# Only empty functions can be on a single line
+AllowShortFunctionsOnASingleLine: Empty
