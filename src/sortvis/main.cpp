@@ -6,6 +6,7 @@
 #include <QShortcut>
 #include <QSlider>
 
+#include "utils.h"
 #include "widgets/BarPlotWidget.h"
 
 int main(int argc, char *argv[]) {
@@ -38,18 +39,22 @@ int main(int argc, char *argv[]) {
   controlsLayout->addWidget(button);
 
   // Animation speed slider (incl label)
-  constexpr int defaultSpeed = 10;  // default speed in ms
-  constexpr auto speedLabelText = "Pace %1 ms/step";
   auto *speedLabel = new QLabel();
-  speedLabel->setText(QString(speedLabelText).arg(defaultSpeed));
   controlsLayout->addWidget(speedLabel);
   auto *speedSlider = new QSlider(Qt::Horizontal);
-  speedSlider->setRange(1, 100);  // speed in ms
-  speedSlider->setValue(defaultSpeed);
-  // speedSlider->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+  speedSlider->setRange(1, 1000);  // speed in ms
+  speedSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
+  speedSlider->setMinimumWidth(utils::centimeterToPixel(2.0));  // 5 cm wide
   controlsLayout->addWidget(speedSlider);
+  constexpr auto speedLabelText = "Pace %1 ms/step";
   QObject::connect(speedSlider, &QSlider::valueChanged,
-                   [&](int value) { speedLabel->setText(QString(speedLabelText).arg(value)); });
+                   [&](int value) { speedLabel->setText(QString(speedLabelText).arg(value, 3)); });
+  // Set value after connection to ensure the label is correct from the start
+  constexpr int defaultSpeed = 10;  // default speed in ms
+  // Set the label width to fit the widest possible text
+  speedLabel->setFixedWidth(
+      speedLabel->fontMetrics().horizontalAdvance(QString(speedLabelText).arg(speedSlider->maximum())));
+  speedSlider->setValue(defaultSpeed);
 
   // Create plots
   auto *plotsLayout = new QHBoxLayout();
