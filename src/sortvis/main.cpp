@@ -8,6 +8,7 @@
 
 #include "utils.h"
 #include "widgets/BarPlotWidget.h"
+#include "widgets/ControlsWidget.h"
 
 int main(int argc, char *argv[]) {
   // Global application object
@@ -29,32 +30,9 @@ int main(int argc, char *argv[]) {
   auto *mainLayout = new QVBoxLayout(&window);
 
   // Controls
-  auto *controlsLayout = new QHBoxLayout();
-  mainLayout->addLayout(controlsLayout);
-  controlsLayout->setAlignment(Qt::AlignLeft);
-
-  // Start button
-  auto *button = new QPushButton("Start!");
-  button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  controlsLayout->addWidget(button);
-
-  // Animation speed slider (incl label)
-  auto *speedLabel = new QLabel();
-  controlsLayout->addWidget(speedLabel);
-  auto *speedSlider = new QSlider(Qt::Horizontal);
-  speedSlider->setRange(1, 1000);  // speed in ms
-  speedSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
-  speedSlider->setMinimumWidth(utils::centimeterToPixel(2.0));  // 5 cm wide
-  controlsLayout->addWidget(speedSlider);
-  constexpr auto speedLabelText = "Pace %1 ms/step";
-  QObject::connect(speedSlider, &QSlider::valueChanged,
-                   [&](int value) { speedLabel->setText(QString(speedLabelText).arg(value, 3)); });
-  // Set value after connection to ensure the label is correct from the start
-  constexpr int defaultSpeed = 10;  // default speed in ms
-  // Set the label width to fit the widest possible text
-  speedLabel->setFixedWidth(
-      speedLabel->fontMetrics().horizontalAdvance(QString(speedLabelText).arg(speedSlider->maximum())));
-  speedSlider->setValue(defaultSpeed);
+  auto *controlsWidget = new ControlsWidget();
+  mainLayout->addWidget(controlsWidget);
+  mainLayout->setStretchFactor(controlsWidget, 0);
 
   // Create plots
   auto *plotsLayout = new QHBoxLayout();
@@ -70,13 +48,20 @@ int main(int argc, char *argv[]) {
       barWidget->setValues({10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
     }
     // Set initial animation speed
-    barWidget->setAnimationSpeed(speedSlider->value());
+    barWidget->setAnimationSpeed(controlsWidget->getSpeedSlider()->value());
     plotsLayout->addWidget(barWidget);
 
     // Connect UI
-    QObject::connect(button, &QPushButton::clicked, barWidget, &BarPlotWidget::startSortAnimation);
-    QObject::connect(speedSlider, &QSlider::valueChanged, barWidget, &BarPlotWidget::setAnimationSpeed);
+    QObject::connect(controlsWidget->getStartButton(),
+                     &QPushButton::clicked,
+                     barWidget,
+                     &BarPlotWidget::startSortAnimation);
+    QObject::connect(controlsWidget->getSpeedSlider(),
+                     &QSlider::valueChanged,
+                     barWidget,
+                     &BarPlotWidget::setAnimationSpeed);
   }
+  mainLayout->setStretchFactor(plotsLayout, 1);
 
   window.show();
   return QApplication::exec();
