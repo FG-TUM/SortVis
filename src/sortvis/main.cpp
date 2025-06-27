@@ -39,8 +39,7 @@ int main(int argc, char *argv[]) {
   mainLayout->addLayout(plotsLayout);
 
   // Create a simple bar plot using QWidgets
-  // FIXME: Don't limit plots
-  for (int i = 2; i < 3; ++i) {
+  for (int i = 0; i < 3; ++i) {
     auto *barWidget = new BarPlotWidget();
     barWidget->generateValues(100);
     // FIXME: Debug
