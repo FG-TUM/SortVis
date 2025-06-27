@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QSlider>
+#include <QSpinBox>
 #include <QWidget>
 
 class ControlsWidget : public QWidget {
@@ -29,8 +30,14 @@ class ControlsWidget : public QWidget {
    */
   [[nodiscard]] QSlider *getSpeedSlider() const;
 
+  /**
+   * Getter for the size spin box.
+   */
+  [[nodiscard]] QSpinBox *getSizeBox() const;
+
  private:
   QHBoxLayout *controlsLayout;
   QPushButton *startButton;
   QSlider *speedSlider;
+  QSpinBox *sizeBox;
 };

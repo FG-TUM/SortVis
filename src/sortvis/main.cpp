@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
   // Create a simple bar plot using QWidgets
   for (int i = 0; i < 3; ++i) {
     auto *barWidget = new BarPlotWidget();
-    barWidget->generateValues(100);
+    barWidget->generateValues(controlsWidget->getSizeBox()->value());
     // FIXME: Debug
     if (i == 0) {
       barWidget->setValues({10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
@@ -51,10 +51,9 @@ int main(int argc, char *argv[]) {
     plotsLayout->addWidget(barWidget);
 
     // Connect UI
-    QObject::connect(controlsWidget->getStartButton(),
-                     &QPushButton::clicked,
-                     barWidget,
-                     &BarPlotWidget::startSortAnimation);
+    QObject::connect(controlsWidget->getStartButton(), &QPushButton::clicked, barWidget, [=]() {
+      barWidget->startSortAnimation(controlsWidget->getSizeBox()->value());
+    });
     QObject::connect(controlsWidget->getSpeedSlider(),
                      &QSlider::valueChanged,
                      barWidget,

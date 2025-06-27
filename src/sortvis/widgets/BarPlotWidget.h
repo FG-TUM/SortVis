@@ -19,7 +19,7 @@ class BarPlotWidget : public QWidget {
    */
   void setValues(const QVector<int> &values);
 
-  void startSortAnimation();
+  void startSortAnimation(int numberOfValues);
 
   /**
    * Reset algorithm, animation and sorting state.

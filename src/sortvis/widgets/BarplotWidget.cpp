@@ -17,13 +17,14 @@ void BarPlotWidget::setValues(const QVector<int> &values) {
   reset();
 }
 
-void BarPlotWidget::startSortAnimation() {
+void BarPlotWidget::startSortAnimation(int numberOfValues) {
   if (values.isEmpty() or sorting) {
     return;
   }
 
+  // restart with new values
   if (sorted) {
-    generateValues(values.size());
+    generateValues(numberOfValues);
     reset();
   }
 

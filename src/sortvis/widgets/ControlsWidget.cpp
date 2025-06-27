@@ -2,9 +2,6 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QPushButton>
-#include <QSlider>
-#include <QSpinBox>
 
 #include "../utils.h"  // needs relative path to not confuse with system utils.h
 
@@ -37,6 +34,14 @@ ControlsWidget::ControlsWidget(QWidget *parent) : QWidget(parent) {
   speedLabel->setFixedWidth(
       speedLabel->fontMetrics().horizontalAdvance(QString(speedLabelText).arg(speedSlider->maximum())));
   speedSlider->setValue(defaultSpeed);
+
+  // Number of bars / array size
+  auto *sizeLabel = new QLabel("Array size");
+  controlsLayout->addWidget(sizeLabel);
+  sizeBox = new QSpinBox();
+  controlsLayout->addWidget(sizeBox);
+  sizeBox->setRange(1, 100);
+  sizeBox->setValue(10);
 }
 
 QHBoxLayout *ControlsWidget::getControlsLayout() const {
@@ -49,4 +54,8 @@ QPushButton *ControlsWidget::getStartButton() const {
 
 QSlider *ControlsWidget::getSpeedSlider() const {
   return speedSlider;
+}
+
+QSpinBox *ControlsWidget::getSizeBox() const {
+  return sizeBox;
 }
