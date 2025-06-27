@@ -7,7 +7,15 @@ ColumnLimit: 120
 # ensure consistent pointer alignment
 DerivePointerAlignment: false
 PointerAlignment: Right
+# Don't allow single line blocks
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortBlocksOnASingleLine: Never
 # Only empty functions can be on a single line
 AllowShortFunctionsOnASingleLine: Empty
+# Only put one argument per line if the sum of all is too long
+AlignAfterOpenBracket: Align
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackArguments: false
+BinPackParameters: OnePerLine
+#BinPackLongBracedList: false       # TODO: clang-format 21
