@@ -14,9 +14,9 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-file(GLOB WIDGET_SOURCES
-     src/sortvis/widgets/*.cpp
-     src/sortvis/widgets/*.h
+file(GLOB_RECURSE WIDGET_SOURCES
+     src/sortvis/*.cpp
+     src/sortvis/*.h
 )
 
 add_executable(SortingVisualizer src/sortvis/main.cpp ${WIDGET_SOURCES})
