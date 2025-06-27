@@ -31,12 +31,11 @@ int main(int argc, char *argv[]) {
 
   // Controls
   auto *controlsWidget = new ControlsWidget();
-  mainLayout->addWidget(controlsWidget);
-  mainLayout->setStretchFactor(controlsWidget, 0);
+  mainLayout->addWidget(controlsWidget, 0);
 
   // Create plots
   auto *plotsLayout = new QHBoxLayout();
-  mainLayout->addLayout(plotsLayout);
+  mainLayout->addLayout(plotsLayout, 1);
 
   // Create a simple bar plot using QWidgets
   for (int i = 0; i < 3; ++i) {
@@ -59,7 +58,6 @@ int main(int argc, char *argv[]) {
                      barWidget,
                      &BarPlotWidget::setAnimationSpeed);
   }
-  mainLayout->setStretchFactor(plotsLayout, 1);
 
   window.show();
   return QApplication::exec();
