@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QSlider>
+#include <QSpinBox>
 
 #include "../utils.h"  // needs relative path to not confuse with system utils.h
 
@@ -24,10 +25,10 @@ ControlsWidget::ControlsWidget(QWidget *parent) : QWidget(parent) {
   speedSlider = new QSlider(Qt::Horizontal);
   speedSlider->setRange(1, 1000);  // speed in ms
   speedSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
-  speedSlider->setMinimumWidth(utils::centimeterToPixel(2.0));  // 5 cm wide
+  speedSlider->setMinimumWidth(utils::centimeterToPixel(2.0));
   controlsLayout->addWidget(speedSlider);
   constexpr auto speedLabelText = "Pace %1 ms/step";
-  QObject::connect(speedSlider, &QSlider::valueChanged, [&](int value) {
+  QObject::connect(speedSlider, &QSlider::valueChanged, [=](int value) {
     speedLabel->setText(QString(speedLabelText).arg(value, 3));
   });
   // Set value after connection to ensure the label is correct from the start
