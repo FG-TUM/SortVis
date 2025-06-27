@@ -26,8 +26,6 @@ int centimeterToPixel(double cm) {
   constexpr double cmToInch = 1. / 2.54;
   const double dpiInCm = dpi * cmToInch;
   const auto pixel = static_cast<int>(std::round(cm * dpiInCm));
-  std::cout << "Pixel: " << pixel << " for cm: " << cm << " with dpi: " << dpi << " and dpiInCm: " << dpiInCm
-            << std::endl;
   return pixel;
 }
 }  // namespace utils
