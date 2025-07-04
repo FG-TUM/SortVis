@@ -32,11 +32,8 @@ void BarPlotWidget::startSortAnimation(int numberOfValues) {
   timer.start();
 }
 void BarPlotWidget::reset() {
-  iteration = 0;
-  i = 0;
   sorting = false;
   steps = 0;
-  swaps = 0;
   timer.stop();
   update();
 }
@@ -57,23 +54,7 @@ int BarPlotWidget::getAnimationSpeed() const {
 void BarPlotWidget::sortStep() {
   // Implements one step of bubble sort
   ++steps;
-  // Optimized bubble sort: Elements > iteration are known to be sorted
-  if (iteration < values.size() - 1) {
-    if (i < values.size() - iteration - 1) {
-      if (values[i] > values[i + 1]) {
-        std::swap(values[i], values[i + 1]);
-        ++swaps;
-      }
-      ++i;
-    } else {
-      i = 0;
-      ++iteration;
-    }
-  } else {
-    timer.stop();
-    sorting = false;
-    sorted = true;
-  }
+  sortStepImpl();
   update();
 }
 
@@ -97,9 +78,13 @@ void BarPlotWidget::paintEvent(QPaintEvent *paint_event) {
   }
 
   // Write the current step number
-  int textX = 10;  // px from the left
-  int textY = 20;  // px above the bottom
+  QString stats = statistics();
+  QRect textRect = painter.fontMetrics().boundingRect(QRect(10, 10, width() - 20, height() - 20),
+                                                      Qt::AlignLeft | Qt::TextWordWrap,
+                                                      stats);
+  painter.drawText(textRect, Qt::AlignLeft | Qt::TextWordWrap, stats);
+}
 
-  QString stepText = QString("Step : %1\tSwaps: %2").arg(steps).arg(swaps);
-  painter.drawText(textX, textY, stepText);
+QString BarPlotWidget::statistics() const {
+  return QString("%1: %2").arg("Step").arg(steps);
 }

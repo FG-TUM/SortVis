@@ -4,11 +4,11 @@
 #include <QVector>
 #include <QWidget>
 
-// Custom paint event for bar plot
 class BarPlotWidget : public QWidget {
-  Q_OBJECT
- public:
-  explicit BarPlotWidget(QWidget *parent = nullptr);
+  Q_OBJECT  // needed for signal/slot mechanism
+ public : explicit BarPlotWidget(QWidget *parent = nullptr);
+
+  ~BarPlotWidget() override = default;
 
   [[nodiscard]] const QVector<int> &getValues() const;
 
@@ -24,7 +24,7 @@ class BarPlotWidget : public QWidget {
   /**
    * Reset algorithm, animation and sorting state.
    */
-  void reset();
+  virtual void reset();
 
   void generateValues(int n);
 
@@ -32,13 +32,16 @@ class BarPlotWidget : public QWidget {
 
   void setAnimationSpeed(int animation_speed);
 
- protected:
-  void paintEvent(QPaintEvent *event) override;
-
  private slots:
   void sortStep();
 
- private:
+ protected:
+  void paintEvent(QPaintEvent *event) override;
+
+  virtual QString statistics() const;
+
+  virtual void sortStepImpl() = 0;
+
   QVector<int> values{};
 
   // Widget State
@@ -46,13 +49,9 @@ class BarPlotWidget : public QWidget {
   bool sorting = false;
   bool sorted = false;
 
-  // Quicksort variables
-  int iteration = 0;
-  int i = 0;
-
   // Statistics
+  constexpr static int statisticsKeyWidth = -10;  // px width of the key in the statistics text
   int steps = 0;
-  int swaps = 0;
   /**
    * Animation speed in milliseconds per step.
    */
