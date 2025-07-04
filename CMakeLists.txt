@@ -28,3 +28,8 @@ target_link_libraries(SortingVisualizer
         Qt6::Widgets
 )
 
+target_include_directories(SortingVisualizer
+        PRIVATE
+        src/
+)
+

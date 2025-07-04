@@ -16,7 +16,7 @@ class ControlsWidget : public QWidget {
   explicit ControlsWidget(QWidget *parent = nullptr);
 
   /**
-   * Getter for the controls layout.
+   * Getter for the control layout.
    */
   [[nodiscard]] QHBoxLayout *getControlsLayout() const;
 

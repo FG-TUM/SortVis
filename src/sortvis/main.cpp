@@ -1,14 +1,9 @@
 #include <QApplication>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPushButton>
 #include <QScreen>
 #include <QShortcut>
-#include <QSlider>
 
-#include "utils.h"
-#include "widgets/BarPlotWidget.h"
-#include "widgets/ControlsWidget.h"
+#include "sortvis/widgets/BarPlotWidget.h"
+#include "sortvis/widgets/ControlsWidget.h"
 
 int main(int argc, char *argv[]) {
   // Global application object

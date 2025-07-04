@@ -3,7 +3,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-#include "../utils.h"  // needs relative path to not confuse with system utils.h
+#include "sortvis/utils.h"
 
 ControlsWidget::ControlsWidget(QWidget *parent) : QWidget(parent) {
   // Layout
