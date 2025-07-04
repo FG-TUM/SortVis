@@ -5,6 +5,7 @@
 #include "sortvis/widgets/BarPlotWidget.h"
 #include "sortvis/widgets/ControlsWidget.h"
 #include "sortvis/widgets/sorter/BubblesortWidget.h"
+#include "widgets/sorter/QuicksortWidget.h"
 
 int main(int argc, char *argv[]) {
   // Global application object
@@ -35,7 +36,13 @@ int main(int argc, char *argv[]) {
 
   // Create a simple bar plot using QWidgets
   for (int i = 0; i < 3; ++i) {
-    auto *barWidget = new BubblesortWidget();
+    BarPlotWidget *barWidget;
+    if (i <= 1 ) {
+      barWidget = new BubblesortWidget();
+    } else {
+      barWidget = new QuicksortWidget();
+    }
+
     barWidget->generateValues(controlsWidget->getSizeBox()->value());
     // FIXME: Debug
     if (i == 0) {
