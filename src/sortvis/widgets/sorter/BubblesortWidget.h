@@ -10,7 +10,7 @@ class BubblesortWidget : public BarPlotWidget {
 
  protected:
   void reset() override;
-  QString statistics() const override;
+  QList<std::pair<QString, int>> statistics() const override;
 
 
  private:

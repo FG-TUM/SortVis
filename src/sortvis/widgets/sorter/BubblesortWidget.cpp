@@ -8,9 +8,9 @@ void BubblesortWidget::reset() {
   i = 0;
   swaps = 0;
 }
-QString BubblesortWidget::statistics() const {
+QList<std::pair<QString, int>> BubblesortWidget::statistics() const {
   auto ret = BarPlotWidget::statistics();
-  ret += QString("\n%1: %2").arg("Swaps").arg(swaps);
+  ret.append({"Swaps", swaps});
   return ret;
 }
 

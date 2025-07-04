@@ -35,10 +35,13 @@ class BarPlotWidget : public QWidget {
  private slots:
   void sortStep();
 
+private:
+  void paintStatistics(QPainter &painter) const;
+
  protected:
   void paintEvent(QPaintEvent *event) override;
 
-  virtual QString statistics() const;
+  virtual QList<std::pair<QString, int>> statistics() const;
 
   virtual void sortStepImpl() = 0;
 

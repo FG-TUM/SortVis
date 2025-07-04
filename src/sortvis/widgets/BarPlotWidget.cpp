@@ -1,5 +1,8 @@
 #include "BarPlotWidget.h"
 
+#include <qgridlayout.h>
+
+#include <QLabel>
 #include <QPainter>
 #include <QRandomGenerator>
 
@@ -77,14 +80,46 @@ void BarPlotWidget::paintEvent(QPaintEvent *paint_event) {
     painter.drawText(i * barWidth + barWidthHalf - labelWidth * 0.5, height() - 10, label);
   }
 
-  // Write the current step number
-  QString stats = statistics();
-  QRect textRect = painter.fontMetrics().boundingRect(QRect(10, 10, width() - 20, height() - 20),
-                                                      Qt::AlignLeft | Qt::TextWordWrap,
-                                                      stats);
-  painter.drawText(textRect, Qt::AlignLeft | Qt::TextWordWrap, stats);
+  // Draw statistics
+  paintStatistics(painter);
 }
 
-QString BarPlotWidget::statistics() const {
-  return QString("%1: %2").arg("Step").arg(steps);
+void BarPlotWidget::paintStatistics(QPainter &painter) const {
+  const auto fontMetrics = painter.fontMetrics();
+
+  const auto keyValueList = statistics();
+  const int colonWidth = fontMetrics.horizontalAdvance(" : ");
+  constexpr int paddingFromLeft = 0;
+  constexpr int paddingFromTop = 0;
+  constexpr int lineSeparation = 2;
+
+  // Measure max widths for alignment
+  int maxKeyWidth = 0;
+  int maxValueWidth = 0;
+  for (const auto &[key, value] : keyValueList) {
+    maxKeyWidth = std::max(maxKeyWidth, fontMetrics.horizontalAdvance(key));
+    maxValueWidth = std::max(maxValueWidth, fontMetrics.horizontalAdvance(QString::number(value)));
+  }
+
+  // Draw each stat line
+  int posY = paddingFromTop;
+  const int lineHeight = fontMetrics.height();
+  for (const auto &[key, value] : keyValueList) {
+    int keyX = paddingFromLeft;
+    int colonX = keyX + maxKeyWidth;
+    int valueX = colonX + colonWidth;
+    int baselineY = posY + lineHeight;
+
+    painter.drawText(keyX, baselineY, key);
+    painter.drawText(colonX, baselineY, " : ");
+    painter.drawText(valueX, baselineY, QString::number(value));
+
+    posY += lineHeight + lineSeparation;
+  }
+}
+
+QList<std::pair<QString, int>> BarPlotWidget::statistics() const {
+  return QList<std::pair<QString, int>>{
+      {"Steps", steps},
+  };
 }
