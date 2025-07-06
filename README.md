@@ -5,7 +5,7 @@ An explorative test project to play around with Qt6.
 ## Dependencies
 
 * CMake
-* Qt6: base, gui
+* Qt6: base, gui, widgets
 
 ## Build
 
