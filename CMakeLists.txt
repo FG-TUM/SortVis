@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31)
-project(SortingVisualizer)
+project(SortVis)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_AUTOMOC ON)
@@ -14,21 +14,23 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-file(GLOB_RECURSE WIDGET_SOURCES
+file(GLOB_RECURSE SOURCES
      src/sortvis/*.cpp
      src/sortvis/*.h
 )
 
-add_executable(SortingVisualizer src/sortvis/main.cpp ${WIDGET_SOURCES})
+set(EXE_NAME SortVis)
 
-target_link_libraries(SortingVisualizer
+add_executable(${EXE_NAME} ${SOURCES})
+
+target_link_libraries(${EXE_NAME}
         PRIVATE
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
 )
 
-target_include_directories(SortingVisualizer
+target_include_directories(${EXE_NAME}
         PRIVATE
         src/
 )
