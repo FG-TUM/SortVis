@@ -28,4 +28,13 @@ int centimeterToPixel(double cm) {
   const auto pixel = static_cast<int>(std::round(cm * dpiInCm));
   return pixel;
 }
+
+QVector<int> generateValues(int n, int min, int max) {
+  QVector<int> values;
+  values.reserve(n);
+  for (int j = 0; j < n; ++j) {
+    values.append(QRandomGenerator::global()->bounded(min, max));
+  }
+  return values;
+}
 }  // namespace utils

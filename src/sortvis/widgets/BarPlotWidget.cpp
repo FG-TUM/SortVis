@@ -18,19 +18,13 @@ const QVector<int> &BarPlotWidget::getValues() const {
 void BarPlotWidget::setValues(const QVector<int> &values) {
   this->values = values;
   reset();
+  update();
 }
 
-void BarPlotWidget::startSortAnimation(int numberOfValues) {
+void BarPlotWidget::startSortAnimation() {
   if (values.isEmpty() or timer.isActive()) {
     return;
   }
-
-  // restart with new values
-  if (sorted) {
-    generateValues(numberOfValues);
-    reset();
-  }
-
   timer.start();
 }
 void BarPlotWidget::reset() {

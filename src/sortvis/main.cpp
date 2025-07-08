@@ -2,6 +2,7 @@
 #include <QScreen>
 #include <QShortcut>
 
+#include "sortvis/utils.h"
 #include "sortvis/widgets/BarPlotWidget.h"
 #include "sortvis/widgets/ControlsWidget.h"
 #include "sortvis/widgets/sorter/BubblesortWidget.h"
@@ -35,32 +36,38 @@ int main(int argc, char *argv[]) {
   mainLayout->addLayout(plotsLayout, 1);
 
   // Create a simple bar plot using QWidgets
-  for (int i = 0; i < 3; ++i) {
+  QVector<BarPlotWidget *> barWidgets;
+  barWidgets.reserve(3);
+  auto values = utils::generateValues(controlsWidget->getSizeBox()->value());
+  for (int i = 0; i < barWidgets.capacity(); ++i) {
     BarPlotWidget *barWidget;
-    if (i <= 1 ) {
+    if (i <= 1) {
       barWidget = new BubblesortWidget();
     } else {
       barWidget = new QuicksortWidget();
     }
 
-    barWidget->generateValues(controlsWidget->getSizeBox()->value());
-    // FIXME: Debug
-    if (i == 0) {
-      barWidget->setValues({10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
-    }
-    // Set initial animation speed
+    // Set initial values and animation speed
+    barWidget->setValues(values);
     barWidget->setAnimationSpeed(controlsWidget->getSpeedSlider()->value());
     plotsLayout->addWidget(barWidget);
+    barWidgets.append(barWidget);
 
     // Connect UI
-    QObject::connect(controlsWidget->getStartButton(), &QPushButton::clicked, barWidget, [=]() {
-      barWidget->startSortAnimation(controlsWidget->getSizeBox()->value());
-    });
     QObject::connect(controlsWidget->getSpeedSlider(),
                      &QSlider::valueChanged,
                      barWidget,
                      &BarPlotWidget::setAnimationSpeed);
   }
+
+  // On "Start", reset all to new common values and start animation
+  QObject::connect(controlsWidget->getStartButton(), &QPushButton::clicked, [&]() {
+    auto newValues = utils::generateValues(controlsWidget->getSizeBox()->value());
+    for (auto *barWidget : barWidgets) {
+      barWidget->setValues(newValues);
+      barWidget->startSortAnimation();
+    }
+  });
 
   window.show();
   return QApplication::exec();
