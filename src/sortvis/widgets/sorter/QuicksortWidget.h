@@ -1,6 +1,7 @@
 #pragma once
 
-#include <QStack>
+#include <stack>
+
 #include "sortvis/widgets/BarPlotWidget.h"
 
 class QuicksortWidget : public BarPlotWidget {
@@ -18,7 +19,12 @@ class QuicksortWidget : public BarPlotWidget {
   void sortStepImpl() override;
 
   // Quicksort variables
-
+  std::stack<std::tuple<int, int>> stack;
+  int pivotVal;
+  int left = 0;
+  int right;
+  int partitionIdx;       // aka i, pivot index
+  int currentIdx = left;  // aka j
 
   // statistics
   int swaps = 0;
