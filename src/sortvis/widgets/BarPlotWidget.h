@@ -45,11 +45,12 @@ private:
 
   virtual void sortStepImpl() = 0;
 
+  void sortingCompleted();
+
   QVector<int> values{};
 
   // Widget State
   QTimer timer;
-  bool sorting = false;
   bool sorted = false;
 
   // Statistics

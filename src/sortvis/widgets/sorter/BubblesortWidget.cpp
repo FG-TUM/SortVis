@@ -28,8 +28,6 @@ void BubblesortWidget::sortStepImpl() {
       ++iteration;
     }
   } else {
-    timer.stop();
-    sorting = false;
-    sorted = true;
+    sortingCompleted();
   }
 }

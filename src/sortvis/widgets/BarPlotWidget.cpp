@@ -21,7 +21,7 @@ void BarPlotWidget::setValues(const QVector<int> &values) {
 }
 
 void BarPlotWidget::startSortAnimation(int numberOfValues) {
-  if (values.isEmpty() or sorting) {
+  if (values.isEmpty() or timer.isActive()) {
     return;
   }
 
@@ -31,11 +31,9 @@ void BarPlotWidget::startSortAnimation(int numberOfValues) {
     reset();
   }
 
-  sorting = true;
   timer.start();
 }
 void BarPlotWidget::reset() {
-  sorting = false;
   steps = 0;
   timer.stop();
   update();
@@ -122,4 +120,8 @@ QList<std::pair<QString, int>> BarPlotWidget::statistics() const {
   return QList<std::pair<QString, int>>{
       {"Steps", steps},
   };
+}
+void BarPlotWidget::sortingCompleted() {
+  sorted = true;
+  timer.stop();
 }
