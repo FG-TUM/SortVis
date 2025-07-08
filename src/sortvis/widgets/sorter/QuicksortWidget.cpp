@@ -19,26 +19,30 @@ QList<std::pair<QString, int>> QuicksortWidget::statistics() const {
 }
 
 void QuicksortWidget::sortStepImpl() {
-  if (left < 0 or left >= right) {
+  // Implements one step of quicksort
+  // Check if the range is valid
+  if (left >= right) {
+    // If the stack is empty, we are done
     if (stack.empty()) {
       sortingCompleted();
       return;
     } else {
+      // More stack frames mean there are more partitions to process
       std::tie(left, right) = stack.top();
       stack.pop();
       currentIdx = left;
-      // going into a new "frame" is a new step
+      // Going into a new partition is a new step
       return;
     }
   }
 
-  // before a new recursion
+  // Initialize for new recursion
   if (currentIdx <= left) {
     pivotVal = values[right];
     partitionIdx = left;
   }
 
-  // partitioning
+  // Partitioning
   if (currentIdx < right) {
     if (values[currentIdx] <= pivotVal) {
       ++swaps;
@@ -47,13 +51,14 @@ void QuicksortWidget::sortStepImpl() {
     }
     ++currentIdx;
   } else {
+    // Finalize partition. Swap pivot to its correct position
     ++swaps;
     std::swap(values[partitionIdx], values[right]);
-    // return partitionIdx
+    // Queue up the right partition for later
     ++recursionDepth;
     stack.push({partitionIdx + 1, right});
 
-    // directly initiate the next stack frame
+    // Continue with left partition immediately
     right = partitionIdx - 1;
     currentIdx = left;
   }
