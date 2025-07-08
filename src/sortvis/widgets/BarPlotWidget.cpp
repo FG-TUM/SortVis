@@ -45,6 +45,7 @@ void BarPlotWidget::generateValues(int n) {
     values.append(QRandomGenerator::global()->bounded(1, 101));
   }
   sorted = false;
+  reset();
   update();
 }
 
